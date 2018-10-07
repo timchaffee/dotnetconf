@@ -1,0 +1,1 @@
+﻿{"ContextClassName":"DotnetconfContext","DefaultDacpacSchema":null,"IdReplace":false,"IncludeConnectionString":false,"OutputPath":"Model","ProjectRootNamespace":"dotnetconf.Model","SelectedToBeGenerated":0,"Tables":["dbo.Sessions","dbo.Votes"],"UseDatabaseNames":false,"UseFluentApiOnly":true,"UseHandleBars":false,"UseInflector":true}

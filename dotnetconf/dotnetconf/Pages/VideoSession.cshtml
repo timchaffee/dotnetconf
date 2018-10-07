@@ -1,0 +1,77 @@
+﻿@page
+@model dotnetconf.Pages.VideoSessionModel
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Session";
+}
+
+<h2>VideoSession</h2>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <Strong>Please vote for 10 Sessions</Strong>
+}
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sessions[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sessions[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sessions[0].Presentors)
+                </th>
+                <th>
+                    <input type="submit" value="TotalVotes" asp-page-handler="SortVote" class="btn btn-default" />
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Sessions)
+            {
+                <tr>
+                    <td>
+                        <a target="_blank" href="@item.URL">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Presentors)
+                    </td>
+                    <td></td>
+                    <td>
+                        @item.Votes.Count()
+                    </td>
+                    <td>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (item.Votes.Where(x => x.UserId == User.Claims.Where(c => c.Issuer == "LOCAL AUTHORITY").First().Value).FirstOrDefault() is null)
+                            {
+                                @if (Model.UserVoteCount < 10)
+                                {
+                                    <input type="submit" value="Vote" asp-page-handler="Vote" asp-route-id=@item.Id class="btn btn-default" />
+                                }
+                            }
+                            else
+                            {
+                                <input type="submit" value="Remove" asp-page-handler="Remove" asp-route-id=@item.Id class="btn btn-default" />
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</form>
